@@ -144,3 +144,4 @@ C:\Projects\UserManagement\obj\Debug\net8.0\refint\UserManagement.dll
 C:\Projects\UserManagement\obj\Debug\net8.0\UserManagement.pdb
 C:\Projects\UserManagement\obj\Debug\net8.0\UserManagement.genruntimeconfig.cache
 C:\Projects\UserManagement\obj\Debug\net8.0\ref\UserManagement.dll
+C:\Projects\UserManagement\obj\Debug\net8.0\UserManagement.sourcelink.json
