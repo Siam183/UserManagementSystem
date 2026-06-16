@@ -1,0 +1,126 @@
+@model UserManagement.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- IMPORTANT: Main login page for user authentication -->
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card shadow">
+
+                <div class="card-header text-center">
+                    <h3>User Management</h3>
+                    <p class="mb-0">Sign in to your account</p>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- NOTE: Display system messages -->
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Success"]
+
+                            @if (TempData["VerificationLink"] != null)
+                            {
+                                <br />
+                                <a href="@TempData["VerificationLink"]">
+                                    Verify Email
+                                </a>
+                            }
+                        </div>
+                    }
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["Error"]
+                        </div>
+                    }
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <form asp-action="Login" method="post">
+
+                        <!-- IMPORTANT: User email -->
+                        <div class="mb-3">
+                            <label asp-for="Email"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Enter your email" />
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <!-- IMPORTANT: User password -->
+                        <div class="mb-3">
+                            <label asp-for="Password"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Enter your password" />
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            Login
+                        </button>
+
+                    </form>
+
+                    <hr />
+
+                    <!-- NOTA BENE: Account-related actions -->
+                    <div class="text-center">
+                        <p>
+                            <a asp-action="Register">
+                                Create New Account
+                            </a>
+                        </p>
+
+                        <p>
+                            <a asp-action="ResendVerification">
+                                Resend Verification Email
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

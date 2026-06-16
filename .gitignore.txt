@@ -1,0 +1,13 @@
+# .NET Build artifacts
+bin/
+obj/
+
+# Visual Studio / VS Code configuration folders
+.vs/
+.vscode/
+
+# Local database instances and user secrets
+*.mdf
+*.ldf
+*.db
+appsettings.Development.json

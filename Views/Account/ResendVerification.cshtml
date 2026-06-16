@@ -1,0 +1,18 @@
+@model UserManagement.ViewModels.ResendVerificationViewModel
+
+<h2>Resend Verification Email</h2>
+
+<div asp-validation-summary="All"></div>
+
+<form asp-action="ResendVerification" method="post">
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+
+    <button type="submit">
+        Send Verification Email
+    </button>
+
+</form>

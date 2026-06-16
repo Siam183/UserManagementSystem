@@ -1,0 +1,130 @@
+@model UserManagement.ViewModels.UserManagementViewModel
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h2>User Management</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<form method="post">
+
+    <div class="mb-3">
+        <button type="submit"
+                id="btnBlock"
+                formaction="/Users/Block"
+                class="btn btn-danger"
+                title="Block selected users" disabled>
+            Block
+        </button>
+
+        <button type="submit"
+                id="btnUnblock"
+                formaction="/Users/Unblock"
+                class="btn btn-success"
+                title="Unblock selected users" disabled>
+            Unblock
+        </button>
+
+        <button type="submit"
+                id="btnDelete"
+                formaction="/Users/Delete"
+                class="btn btn-warning"
+                title="Delete selected users permanently" disabled>
+            Delete
+        </button>
+
+        <button type="submit"
+                id="btnDeleteUnverified"
+                formaction="/Users/DeleteUnverified"
+                class="btn btn-secondary"
+                title="Delete all selected unverified users" disabled>
+            Delete Unverified
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="selectAll" />
+                    </th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Registration Date</th>
+                    <th>Last Login</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox"
+                                   class="user-checkbox"
+                                   name="SelectedUserIds"
+                                   value="@user.Id" />
+                        </td>
+                        <td>@user.Name</td>
+                        <td>@user.Email</td>
+                        <td>@user.Status</td>
+                        <td>@user.RegistrationDate</td>
+                        <td>@(user.LastLogin?.ToString("g") ?? "Never")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectAllCheckbox = document.getElementById("selectAll");
+        const userCheckboxes = document.querySelectorAll(".user-checkbox");
+        const buttons = document.querySelectorAll("#btnBlock, #btnUnblock, #btnDelete, #btnDeleteUnverified");
+
+        // Function to toggle buttons based on how many boxes are ticked
+        function updateToolbarState() {
+            const checkedCount = document.querySelectorAll(".user-checkbox:checked").length;
+            
+            buttons.forEach(button => {
+                button.disabled = (checkedCount === 0);
+            });
+        }
+
+        // 1. Master Checkbox logic
+        selectAllCheckbox.addEventListener("change", function () {
+            userCheckboxes.forEach(cb => {
+                cb.checked = this.checked;
+            });
+            updateToolbarState();
+        });
+
+        // 2. Row Checkboxes logic
+        userCheckboxes.forEach(cb => {
+            cb.addEventListener("change", function () {
+                // If one row is manually unchecked, uncheck the master selectbox
+                if (!this.checked) {
+                    selectAllCheckbox.checked = false;
+                } else {
+                    // If all rows become manually checked, light up master selectbox
+                    const allChecked = document.querySelectorAll(".user-checkbox:checked").length === userCheckboxes.length;
+                    selectAllCheckbox.checked = allChecked;
+                }
+                updateToolbarState();
+            });
+        });
+
+        // Run initially just to guarantee sync state on reload
+        updateToolbarState();
+    });
+</script>
